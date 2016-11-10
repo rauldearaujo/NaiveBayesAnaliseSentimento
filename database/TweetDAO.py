@@ -11,7 +11,7 @@ class TweetDAO:
     #Retorna a lista de todas as rotas cadastrada no banco
 	def selectAll(self):
 		cur = self.__conn.cursor()
-		cur.execute("""SELECT id, tokens, original, grupo from tweets order by grupo""")
+		cur.execute(""" SELECT max(id), max(tokens), original, max(classe) FROM tweets WHERE tokens != '' GROUP BY original""")
 		rows = cur.fetchall()
 		cur.close()
 		tweets = []
@@ -25,6 +25,6 @@ class TweetDAO:
 		if(tweets == None):
 			return 
 		cur = self.__conn.cursor()
-		cur.executemany("""INSERT INTO tweets (id, tokens, original, grupo) VALUES (%s,%s,%s,%s)""", tweets)
+		cur.executemany("""INSERT INTO tweets (id, tokens, original, classe) VALUES (%s,%s,%s,%s)""", tweets)
 		self.__conn.commit()
 		cur.close()

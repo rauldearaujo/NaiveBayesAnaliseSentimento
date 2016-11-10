@@ -5,10 +5,6 @@ def readCSV(path):
 		reader = csv.DictReader(csvfile, delimiter=';') 
 		tweets = [];
 		for row in reader:
-			tweet = [row['id'], row['tokens'], row['original']];
-			if('group' in row):
-				tweet.append(row['group'])
-			else:
-				tweet.append(0);
+			tweet = [row['id'], row['tokens'], row['original'], row['classe']];
 			tweets.append(tuple(tweet));
 		return tweets
