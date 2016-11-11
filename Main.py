@@ -20,20 +20,16 @@ tweets = readCSV('input/tweets.csv')
 tweetDAO.executeMany(tweets);
 '''
 
-tweets = tweetDAO.selectAll()
+#tweets = tweetDAO.selectAll()
+tweets = tweetDAO.selectClassesLimit(5000);
+
 #for t in tweets: 
 #	print t.tokens
 #	print t.classe
 
-'''	
-tweet1 = Tweet(1, "Chinese Beijing Chinese", "Chinese Beijing Chinese", 'positive')
-tweet2 = Tweet(2, "Chinese Chinese Shangai", "Chinese Shangai Chinese", 'positive')
-tweet3 = Tweet(3, "Chinese Macao", "Chinese Macao", 'positive')
-tweet4 = Tweet(4, "Tokyo Japan Chinese", "Tokyo Japan Chinese", 'negative')
-tweets = [tweet1,tweet2,tweet3,tweet4]
-'''
 
-melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento = treinarModelo(tweets)
+
+melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento = treinarModelo(tweets, 1000)
 print "####################################"
 print 'Melhor peso: ' + str(melhorPeso)
 print 'Precision: ' + str(precisionDoMelhor)

@@ -4,11 +4,10 @@ from math import log
 import random as rnd
 import copy
 
-MAX_TREINOS = 100
 POSITIVE = 'positive'
 NEGATIVE = 'negative'
 
-def treinarModelo(tweets):
+def treinarModelo(tweets, qtdLoops):
 	qtdTweets = len(tweets)
 	qtdTreino = int(qtdTweets * 0.7)
 	melhorPeso = 0.0
@@ -16,7 +15,7 @@ def treinarModelo(tweets):
 	precisionDoMelhor = 0.0
 	recallDoMelhor = 0.0
 	fmeasureDoMelhor = 0.0
-	for i in range(MAX_TREINOS):
+	for i in range(qtdLoops):
 		rnd.shuffle(tweets)
 		tweetsTreinamento = tweets[0:qtdTreino]
 		tweetsTeste = tweets[qtdTreino:qtdTweets]

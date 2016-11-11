@@ -5,4 +5,5 @@ Bibliotecas Necessárias
 --psycopg2
 
 Input / Diretório input
--- tweets.csv CSV com id, tokens, original
+-- tweets.csv CSV com id, tokens, original. 
+-- Arquivo de tweets já deve estar preprocessado e com tokens separados por espaços
