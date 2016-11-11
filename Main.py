@@ -6,6 +6,7 @@ from database.TweetDAO import *
 from database.Tweet import *
 from database.Connection import *
 from naiveBayesClassifier.nbclassifier import * 
+import random as rnd
 
 connectionFactory = ConnectionFactory()
 tweetDAO = TweetDAO(connectionFactory.getConnection())
@@ -31,17 +32,10 @@ tweet3 = Tweet(3, "Chinese Macao", "Chinese Macao", 'positive')
 tweet4 = Tweet(4, "Tokyo Japan Chinese", "Tokyo Japan Chinese", 'negative')
 tweets = [tweet1,tweet2,tweet3,tweet4]
 '''
-qtdTweets = len(tweets)
-qtdTreino = int(qtdTweets * 0.7)
-naiveBayesClassifier = NaiveBayes(tweets[0:qtdTreino])
-print naiveBayesClassifier.V
 
-qtdT = 0
-qtdF = 0
-for tweet in tweets[qtdTreino:qtdTweets]:
-	if tweet.classe == naiveBayesClassifier.classificarMensagem(tweet.tokens):
-		qtdT+=1
-	else:
-		qtdF+=1
-print qtdT
-print qtdF
+melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento = treinarModelo(tweets)
+print "####################################"
+print 'Melhor peso: ' + str(melhorPeso)
+print 'Precision: ' + str(precisionDoMelhor)
+print 'Recall: ' + str(recallDoMelhor)
+print 'F-Measure: ' + str(fmeasureDoMelhor)

@@ -1,6 +1,58 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from math import log
+import random as rnd
+import copy
+
+MAX_TREINOS = 100
+POSITIVE = 'positive'
+NEGATIVE = 'negative'
+
+def treinarModelo(tweets):
+	qtdTweets = len(tweets)
+	qtdTreino = int(qtdTweets * 0.7)
+	melhorPeso = 0.0
+	melhorBaseTreinamento = []
+	precisionDoMelhor = 0.0
+	recallDoMelhor = 0.0
+	fmeasureDoMelhor = 0.0
+	for i in range(MAX_TREINOS):
+		rnd.shuffle(tweets)
+		tweetsTreinamento = tweets[0:qtdTreino]
+		tweetsTeste = tweets[qtdTreino:qtdTweets]
+		naiveBayesClassifier = NaiveBayes(tweetsTreinamento)
+		print "V: " + str(naiveBayesClassifier.V)
+		precision, recall, f_measure = classificar(tweetsTeste, naiveBayesClassifier)
+		pesoAtual = f_measure
+		print 'Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
+		if pesoAtual > melhorPeso:
+			melhorPeso = pesoAtual
+			precisionDoMelhor = precision
+			recallDoMelhor = recall
+			fmeasureDoMelhor = f_measure
+			melhorBaseTreinamento = copy.copy(tweets)
+	return (melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento)		
+
+def classificar(tweetsTeste, naiveBayesClassifier):
+	TP = 0 #Positivo
+	FP = 0
+	TN = 0 #Negativo
+	FN = 0	
+	for tweet in tweetsTeste:
+		if tweet.classe == POSITIVE:
+			if tweet.classe == naiveBayesClassifier.classificarMensagem(tweet.tokens):
+				TP+=1
+			else:
+				FP+=1
+		elif tweet.classe == NEGATIVE:
+			if tweet.classe == naiveBayesClassifier.classificarMensagem(tweet.tokens):
+				TN+=1
+			else:
+				FN+=1
+	precision = TP/float(TP+FP)
+	recall = TP / float(TP + FN)
+	f_measure = 2 * ((precision * recall)/(precision + recall))
+	return (precision, recall, f_measure)
 
 class NaiveBayes:
 
