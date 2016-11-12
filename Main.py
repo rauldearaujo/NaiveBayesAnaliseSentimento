@@ -38,8 +38,10 @@ else:
 #	print t.tokens
 #	print t.classe
 
+qtdLoops = 1000
+
 #melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento = treinarModelo(tweets, 1000)
-melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix = treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, 1000)
+melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix = treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops)
 
 print "####################################"
 print 'Melhor peso: ' + str(melhorPeso)
