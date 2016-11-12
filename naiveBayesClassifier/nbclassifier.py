@@ -16,13 +16,12 @@ def treinarModelo(tweets, qtdLoops):
 	recallDoMelhor = 0.0
 	fmeasureDoMelhor = 0.0
 	for i in range(qtdLoops):
-		rnd.shuffle(tweets)
 		tweetsTreinamento = tweets[0:qtdTreino]
 		tweetsTeste = tweets[qtdTreino:qtdTweets]
 		naiveBayesClassifier = NaiveBayes(tweetsTreinamento)
 		print "V: " + str(naiveBayesClassifier.V)
-		precision, recall, f_measure = classificar(tweetsTeste, naiveBayesClassifier)
-		pesoAtual = f_measure
+		accuracy, precision, recall, f_measure, TP, FP, TN, FN  = classificar(tweetsTeste, naiveBayesClassifier)
+		pesoAtual = accuracy
 		print 'Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
 		if pesoAtual > melhorPeso:
 			melhorPeso = pesoAtual
@@ -30,7 +29,49 @@ def treinarModelo(tweets, qtdLoops):
 			recallDoMelhor = recall
 			fmeasureDoMelhor = f_measure
 			melhorBaseTreinamento = copy.copy(tweets)
+		rnd.shuffle(tweets)
 	return (melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento)		
+
+def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
+	qtdTweetsPositivos = len(tweetsPositivos)
+	qtdTreinoPositivos = int(qtdTweetsPositivos * 0.7)
+	qtdTweetsNegativos = len(tweetsNegativos)
+	qtdTreinoNegativos = int(qtdTweetsNegativos * 0.7)
+	
+	melhorPeso = 0.0
+	melhorBaseTreinamento = ()
+	precisionDoMelhor = 0.0
+	recallDoMelhor = 0.0
+	fmeasureDoMelhor = 0.0
+	accuracyDoMelhor = 0.0
+	for i in range(qtdLoops):
+
+		tweetsTreinamentoPositivos = tweetsPositivos[0:qtdTreinoPositivos]
+		tweetsTreinamentoNegativos = tweetsNegativos[0:qtdTreinoNegativos]
+		tweetsTreinamento = tweetsTreinamentoPositivos + tweetsTreinamentoNegativos
+
+		tweetsTestePositivos = tweetsPositivos[qtdTreinoPositivos:qtdTweetsPositivos]
+		tweetsTesteNegativos = tweetsNegativos[qtdTreinoNegativos:qtdTweetsNegativos]
+		tweetsTeste = tweetsTestePositivos + tweetsTesteNegativos
+
+		naiveBayesClassifier = NaiveBayes(tweetsTreinamento)
+		accuracy, precision, recall, f_measure, TP, FP, TN, FN = classificar(tweetsTeste, naiveBayesClassifier)
+		pesoAtual = accuracy
+		if pesoAtual > melhorPeso:
+			print 'Accuracy:' + str(accuracy) + '; Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
+			print 'TP: ' + str(TP) + "; FP: " + str(FP) + "; TN: " + str(TN) + '; FN: ' + str(FN)
+			melhorPeso = pesoAtual
+			precisionDoMelhor = precision
+			recallDoMelhor = recall
+			fmeasureDoMelhor = f_measure
+			accuracyDoMelhor = accuracy
+			melhorBaseTreinamento = (copy.copy(tweetsPositivos), copy.copy(tweetsNegativos))
+
+		#shuffle list
+		rnd.shuffle(tweetsPositivos)
+		rnd.shuffle(tweetsNegativos)
+	return (melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento)		
+
 
 def classificar(tweetsTeste, naiveBayesClassifier):
 	TP = 0 #Positivo
@@ -51,7 +92,8 @@ def classificar(tweetsTeste, naiveBayesClassifier):
 	precision = TP/float(TP+FP)
 	recall = TP / float(TP + FN)
 	f_measure = 2 * ((precision * recall)/(precision + recall))
-	return (precision, recall, f_measure)
+	accuracy = (TP + TN)/float(len(tweetsTeste)) 
+	return (accuracy, precision, recall, f_measure, TP, FP, TN, FN)
 
 class NaiveBayes:
 

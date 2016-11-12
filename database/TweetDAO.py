@@ -22,7 +22,8 @@ class TweetDAO:
 
 	#Retorna a lista de todas as rotas cadastrada no banco
 	def selectClassesLimit(self, limit):
-		tweets = []
+		tweetsPositivos = []
+		tweetsNegativos = []
 		#Pegando Positivos
 		cur = self.__conn.cursor()
 		sql = """ SELECT max(id), max(tokens), original, max(classe) FROM tweets WHERE classe='positive' and tokens != '' GROUP BY original limit {0}"""
@@ -33,7 +34,7 @@ class TweetDAO:
 		cur.close()
 		for row in rows:
 			tweet = Tweet(row[0],row[1],row[2],row[3])
-			tweets.append(tweet)
+			tweetsPositivos.append(tweet)
 
 		#Pegando Negativos	
 		cur = self.__conn.cursor()
@@ -45,8 +46,8 @@ class TweetDAO:
 		cur.close()
 		for row in rows:
 			tweet = Tweet(row[0],row[1],row[2],row[3])
-			tweets.append(tweet)
-		return tweets
+			tweetsNegativos.append(tweet)
+		return tweetsPositivos, tweetsNegativos
 	
 
 	#Insere uma lista de tuplas na tabela rotas
