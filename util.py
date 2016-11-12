@@ -8,7 +8,7 @@ header = ['id','tokens','original','classe']
 POSITIVE = 'positive'
 NEGATIVE = 'negative'
 
-def readCSV(path):
+def readCSVToTweets(path):
 	with open(path, 'r') as csvfile:
 		reader = csv.DictReader(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL) 
 		tweetsPositivos = [];
@@ -23,7 +23,7 @@ def readCSV(path):
 
 		return tweetsPositivos,tweetsNegativos
 
-def writeCSV(tweets, path):
+def writeCSVFromTweets(tweets, path):
 	with open(path, 'wb') as csvfile:
 	    spamwriter = csv.writer(csvfile, delimiter=';',
 	                            quotechar='|', quoting=csv.QUOTE_MINIMAL)

@@ -44,6 +44,7 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 	recallDoMelhor = 0.0
 	fmeasureDoMelhor = 0.0
 	accuracyDoMelhor = 0.0
+	bestConfusionMatrix = []
 	for i in range(qtdLoops):
 
 		tweetsTreinamentoPositivos = tweetsPositivos[0:qtdTreinoPositivos]
@@ -66,11 +67,11 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 			fmeasureDoMelhor = f_measure
 			accuracyDoMelhor = accuracy
 			melhorBaseTreinamento = (copy.copy(tweetsPositivos), copy.copy(tweetsNegativos))
-
+			bestConfusionMatrix = [TP, FP, TN, FN]
 		#shuffle list
 		rnd.shuffle(tweetsPositivos)
 		rnd.shuffle(tweetsNegativos)
-	return (melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento)		
+	return (melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix)		
 
 
 def classificar(tweetsTeste, naiveBayesClassifier):
@@ -83,12 +84,12 @@ def classificar(tweetsTeste, naiveBayesClassifier):
 			if tweet.classe == naiveBayesClassifier.classificarMensagem(tweet.tokens):
 				TP+=1
 			else:
-				FP+=1
+				FN+=1
 		elif tweet.classe == NEGATIVE:
 			if tweet.classe == naiveBayesClassifier.classificarMensagem(tweet.tokens):
 				TN+=1
 			else:
-				FN+=1
+				FP+=1
 	precision = TP/float(TP+FP)
 	recall = TP / float(TP + FN)
 	f_measure = 2 * ((precision * recall)/(precision + recall))
