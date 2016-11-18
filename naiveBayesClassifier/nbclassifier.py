@@ -34,9 +34,16 @@ def treinarModelo(tweets, qtdLoops):
 
 def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 	qtdTweetsPositivos = len(tweetsPositivos)
-	qtdTreinoPositivos = int(qtdTweetsPositivos * 0.7)
 	qtdTweetsNegativos = len(tweetsNegativos)
-	qtdTreinoNegativos = int(qtdTweetsNegativos * 0.7)
+
+	qtdTreino = int(qtdTweetsPositivos * 0.7)
+	indiceUltimoTeste = qtdTweetsPositivos
+	if(len(tweetsNegativos) < len(tweetsPositivos)):
+		qtdTreino = int(qtdTweetsNegativos * 0.7)
+		indiceUltimoTeste = qtdTweetsNegativos
+
+	qtdTreinoPositivos = qtdTreino
+	qtdTreinoNegativos = qtdTreino
 	
 	melhorPeso = 0.0
 	melhorBaseTreinamento = ()
@@ -51,8 +58,8 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 		tweetsTreinamentoNegativos = tweetsNegativos[0:qtdTreinoNegativos]
 		tweetsTreinamento = tweetsTreinamentoPositivos + tweetsTreinamentoNegativos
 
-		tweetsTestePositivos = tweetsPositivos[qtdTreinoPositivos:qtdTweetsPositivos]
-		tweetsTesteNegativos = tweetsNegativos[qtdTreinoNegativos:qtdTweetsNegativos]
+		tweetsTestePositivos = tweetsPositivos[qtdTreinoPositivos:indiceUltimoTeste]
+		tweetsTesteNegativos = tweetsNegativos[qtdTreinoNegativos:indiceUltimoTeste]
 		tweetsTeste = tweetsTestePositivos + tweetsTesteNegativos
 
 		naiveBayesClassifier = NaiveBayes(tweetsTreinamento)
@@ -71,6 +78,7 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 		#shuffle list
 		rnd.shuffle(tweetsPositivos)
 		rnd.shuffle(tweetsNegativos)
+		print "Treino: " + str(i)
 	return (melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix)		
 
 

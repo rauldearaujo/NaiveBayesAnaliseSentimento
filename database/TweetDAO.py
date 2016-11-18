@@ -26,7 +26,7 @@ class TweetDAO:
 		tweetsNegativos = []
 		#Pegando Positivos
 		cur = self.__conn.cursor()
-		sql = """ SELECT max(id), max(tokens), original, max(classe) FROM tweets WHERE classe='positive' and tokens != '' GROUP BY original limit {0}"""
+		sql = """ SELECT id, tokens, original, classe FROM tweets WHERE classe='positive' and tokens != '' limit {0}"""
 		sql = sql.format(limit)
 		cur.execute(sql)
 		
@@ -38,7 +38,7 @@ class TweetDAO:
 
 		#Pegando Negativos	
 		cur = self.__conn.cursor()
-		sql = """ SELECT max(id), max(tokens), original, max(classe) FROM tweets WHERE classe='negative' and tokens != '' GROUP BY original limit {0}"""
+		sql = """ SELECT id, tokens, original, classe FROM tweets WHERE classe='negative' and tokens != '' limit {0}"""
 		sql = sql.format(limit)
 
 		cur.execute(sql)

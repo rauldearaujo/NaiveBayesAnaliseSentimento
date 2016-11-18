@@ -33,12 +33,13 @@ if os.path.isfile(path):
 	tweets = tweetsPositivos + tweetsNegativos
 else:
 	tweets = tweetDAO.selectAll()
-	tweetsPositivos, tweetsNegativos = tweetDAO.selectClassesLimit(4500);
+	tweetsPositivos, tweetsNegativos = tweetDAO.selectClassesLimit(30000);
+
 #for t in tweets: 
 #	print t.tokens
 #	print t.classe
 
-qtdLoops = 1000
+qtdLoops = 100
 
 #melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento = treinarModelo(tweets, 1000)
 melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix = treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops)
