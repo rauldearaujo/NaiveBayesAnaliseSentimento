@@ -4,7 +4,7 @@
 import csv
 from database.Tweet import *
 
-header = ['id','tokens','original','classe']
+header = ['id','tokens','original','classe','emojis']
 POSITIVE = 'positive'
 NEGATIVE = 'negative'
 
@@ -15,7 +15,7 @@ def readCSVToTweets(path):
 		tweetsNegativos = [];
 		
 		for row in reader:
-			tweet = Tweet(row['id'], row['tokens'], row['original'], row['classe']);
+			tweet = Tweet(row['id'], row['tokens'], row['original'], row['classe'], row['emojis']);
 			if(tweet.classe == POSITIVE):
 				tweetsPositivos.append(tweet);
 			else:
@@ -29,4 +29,4 @@ def writeCSVFromTweets(tweets, path):
 	                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
 	    spamwriter.writerow(header)
 	    for tweet in tweets:
-	    	spamwriter.writerow([tweet.id, tweet.tokens, tweet.original, tweet.classe])
+	    	spamwriter.writerow([tweet.id, tweet.tokens, tweet.original, tweet.classe, tweet.emojis])
