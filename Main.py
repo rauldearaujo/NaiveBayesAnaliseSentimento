@@ -12,14 +12,13 @@ import os.path
 connectionFactory = ConnectionFactory()
 tweetDAO = TweetDAO(connectionFactory.getConnection())
 
-'''
-tweets = readCSV('input/tweets.csv')
+#Ler twetts do csv e salvar no banco, necessário só na primeira vez
+#tweets = readCSV('input/tweets.csv')
 #print tweets
 
 #abre conexão
 #cria taxistaDAO
-tweetDAO.executeMany(tweets);
-'''
+#tweetDAO.executeMany(tweets);
 
 path = "bestSet.csv"
 tweets = []

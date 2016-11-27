@@ -65,9 +65,9 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 		naiveBayesClassifier = NaiveBayes(tweetsTreinamento)
 		accuracy, precision, recall, f_measure, TP, FP, TN, FN = classificar(tweetsTeste, naiveBayesClassifier)
 		pesoAtual = accuracy
+		print 'Accuracy:' + str(accuracy) + '; Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
+		print 'TP: ' + str(TP) + "; FP: " + str(FP) + "; TN: " + str(TN) + '; FN: ' + str(FN)
 		if pesoAtual > melhorPeso:
-			print 'Accuracy:' + str(accuracy) + '; Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
-			print 'TP: ' + str(TP) + "; FP: " + str(FP) + "; TN: " + str(TN) + '; FN: ' + str(FN)
 			melhorPeso = pesoAtual
 			precisionDoMelhor = precision
 			recallDoMelhor = recall
