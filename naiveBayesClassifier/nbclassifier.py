@@ -22,8 +22,8 @@ def treinarModelo(tweets, qtdLoops):
 		print "V: " + str(naiveBayesClassifier.V)
 		accuracy, precision, recall, f_measure, TP, FP, TN, FN  = classificar(tweetsTeste, naiveBayesClassifier)
 		pesoAtual = accuracy
-		print 'Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
 		if pesoAtual > melhorPeso:
+			print 'Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
 			melhorPeso = pesoAtual
 			precisionDoMelhor = precision
 			recallDoMelhor = recall
@@ -65,9 +65,9 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 		naiveBayesClassifier = NaiveBayes(tweetsTreinamento)
 		accuracy, precision, recall, f_measure, TP, FP, TN, FN = classificar(tweetsTeste, naiveBayesClassifier)
 		pesoAtual = accuracy
-		print 'Accuracy:' + str(accuracy) + '; Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
-		print 'TP: ' + str(TP) + "; FP: " + str(FP) + "; TN: " + str(TN) + '; FN: ' + str(FN)
 		if pesoAtual > melhorPeso:
+			print 'Accuracy:' + str(accuracy) + '; Precision: ' + str(precision) + '; Recall: - ' + str(recall) +  '; F-Measure - ' + str(f_measure)
+			print 'TP: ' + str(TP) + "; FP: " + str(FP) + "; TN: " + str(TN) + '; FN: ' + str(FN)
 			melhorPeso = pesoAtual
 			precisionDoMelhor = precision
 			recallDoMelhor = recall
@@ -81,6 +81,22 @@ def treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops):
 		print "Treino: " + str(i)
 	return (melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix)		
 
+def buildClassificador(tweetsPositivos, tweetsNegativos):
+	qtdTweetsPositivos = len(tweetsPositivos)
+	qtdTweetsNegativos = len(tweetsNegativos)
+
+	qtdTreino = int(qtdTweetsPositivos * 0.7)
+	indiceUltimoTeste = qtdTweetsPositivos
+	if(len(tweetsNegativos) < len(tweetsPositivos)):
+		qtdTreino = int(qtdTweetsNegativos * 0.7)
+		indiceUltimoTeste = qtdTweetsNegativos
+
+	qtdTreinoPositivos = qtdTreino
+	qtdTreinoNegativos = qtdTreino
+	tweetsTreinamentoPositivos = tweetsPositivos[0:qtdTreinoPositivos]
+	tweetsTreinamentoNegativos = tweetsNegativos[0:qtdTreinoNegativos]
+	tweetsTreinamento = tweetsTreinamentoPositivos + tweetsTreinamentoNegativos
+	return NaiveBayes(tweetsTreinamento)
 
 def classificar(tweetsTeste, naiveBayesClassifier):
 	TP = 0 #Positivo

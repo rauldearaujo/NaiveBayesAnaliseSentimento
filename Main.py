@@ -38,7 +38,7 @@ else:
 #	print t.tokens
 #	print t.classe
 
-qtdLoops = 100
+qtdLoops = 10
 
 #melhorPeso, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento = treinarModelo(tweets, 1000)
 melhorPeso, accuracyDoMelhor, precisionDoMelhor, recallDoMelhor, fmeasureDoMelhor, melhorBaseTreinamento, bestConfusionMatrix = treinarModeloDatasetsDiferentes(tweetsPositivos, tweetsNegativos, qtdLoops)
