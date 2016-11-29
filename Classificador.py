@@ -32,8 +32,13 @@ if os.path.isfile(path):
 	tweets = tweetsPositivos + tweetsNegativos
 
 	classificador = buildClassificador(tweetsPositivos, tweetsNegativos)
+	count = 0
+	tweetsSql = []
 	for tweet in tweetsNoEmoji:
 		classificadoComo = classificador.classificarMensagem(tweet.tokens)
-		tweetDAO.updateTweet(tweet.id, classificadoComo)	
+		tweetsSql.append((tweet.id, classificadoComo))	
+		count += 1
+		print "Tweet: " + str(count)
+	tweetDAO.executeManyClassificados(tweetsSql)
 else:
 	print 'Nenhuma base de treinamento encontrada'

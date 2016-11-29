@@ -67,15 +67,15 @@ class TweetDAO:
 		if(tweets == None):
 			return 
 		cur = self.__conn.cursor()
-		cur.executemany("""INSERT INTO tweets (id, tokens, original, classe, emojis) VALUES (%s,%s,%s,%s,%s)""", tweets)
+		cur.executemany("""INSERT INTO tweets (id, tokens, original, classe, emojis, data) VALUES (%s,%s,%s,%s,%s,%s)""", tweets)
 		self.__conn.commit()
 		cur.close()
 
 	#Insere uma lista de tuplas na tabela rotas
-	def updateTweet(self, id, novaClasse):
+	def executeManyClassificados(self, tweets):
+		if(tweets == None):
+			return 
 		cur = self.__conn.cursor()
-		sql = """UPDATE tweets set classificado = '{0}' where id = {1}"""
-		sql = sql.format(novaClasse, id)
-		cur.execute(sql)
+		cur.executemany("""INSERT INTO tweetsClassificados (id, classe) VALUES (%s,%s)""", tweets)
 		self.__conn.commit()
 		cur.close()
