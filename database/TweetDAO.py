@@ -21,6 +21,18 @@ class TweetDAO:
 		return tweets
 
 	#Retorna a lista de todas as rotas cadastrada no banco
+	def selectAllNoEmoji(self):
+		cur = self.__conn.cursor()
+		cur.execute(""" SELECT id, tokens, original, classe, emojis FROM tweets WHERE tokens != '' and classe='NoEmoji' """)
+		rows = cur.fetchall()
+		cur.close()
+		tweets = []
+		for row in rows:
+			tweet = Tweet(row[0],row[1],row[2],row[3], row[4])
+			tweets.append(tweet)
+		return tweets	
+
+	#Retorna a lista de todas as rotas cadastrada no banco
 	def selectClassesLimit(self, limit):
 		tweetsPositivos = []
 		tweetsNegativos = []
@@ -56,5 +68,14 @@ class TweetDAO:
 			return 
 		cur = self.__conn.cursor()
 		cur.executemany("""INSERT INTO tweets (id, tokens, original, classe, emojis) VALUES (%s,%s,%s,%s,%s)""", tweets)
+		self.__conn.commit()
+		cur.close()
+
+	#Insere uma lista de tuplas na tabela rotas
+	def updateTweet(self, id, novaClasse):
+		cur = self.__conn.cursor()
+		sql = """UPDATE tweets set classificado = '{0}' where id = {1}"""
+		sql = sql.format(novaClasse, id)
+		cur.execute(sql)
 		self.__conn.commit()
 		cur.close()
